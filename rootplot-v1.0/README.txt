@@ -3,7 +3,7 @@ Author: Cody DePew (cld5311@psu.edu, depewcod@gmail.com)
 Penn State University
 Summer 2020
 
-Bhat, A., C. DePew, and G. Monshausen. 2020. High-resolution analysis of root gravitropic bending using RootPlot
+Bhat, A., C. DePew, and G. Monshausen. 2020. High-resolution analysis of root gravitropic bending using RootPlot.
 
 
 ~~~~~~~~ INTRODUCTION ~~~~~~~~
@@ -97,31 +97,44 @@ REGR_max_color: Maximum value of color scale for REGR heatplot
 REGR_x_tick: Tick mark interval, REGR heatplot, x axis
 REGR_y_tick: Tick mark interval, REGR heatplot, y axis
 
-3.) ROOTPLOT OUTPUTS 
+3.) ROOTPLOT OUTPUTS (See further information in the main text of paper.)
 
 Root growth rate: Root growth rates are calculated as changes in root ‘mid’line (or ‘edgeline’ for analysis of differential growth on opposite root flanks) length per frame. For midline-based root growth rates to correctly reflect total growth rate, tracked points must encompass the entire root elongation zone (Figure 3a,b).
+	
 	Prefix-midlines.csv: Length of root midline in successive frames (Figure 4b). Each column corresponds to the midline in a particular frame (time point); each row lists the cumulative length of the root midline (in pixels of the original image) with increasing distance from the reference point P0; the midline length is calculated as the sum of distances between neighboring tracked points Pi by applying the Pythagorean equation to their XY coordinates (Figure 4a). The last cell in each column thus reflects the entire length Ln of the measured midline in a frame.
-L_n=∑_(i=1)^n √((P_(i,X)-P_(i-1,X) )^2+〖(P_(i,Y)-P_(i-1,Y))〗^2 )
-	Prefix-midline growth rate.csv: Root growth rates [pixels frame-1] (Figure 4c) calculated as differences in total midline length between frames (Ln; t+1 – Ln; t) taken from Prefix-midlines.csv.
-	Prefix-midline growth rate.png: Graphs of root growth rates [pixels frame-1].
+
+	Prefix-midline growth rate.csv: Root growth rates (Figure 4c) calculated as differences in total midline length between frames.
+	
+	Prefix-midline growth rate.png: Graphs of root growth rates.
 
 Root angle: Root angles are calculated as angles of a straight line connecting two user-defined points P1 and P2 (specified in ‘user-defined-parameters.csv’). These points are selected from the list of tracked points making up the root midline (Fig. 3c). 
 
-	Prefix-angles.csv: Angles and changes in angle (bending rate) of line connecting two user-defined points Pa(X,Y) and Pb(X,Y) along the root midline [given as degrees and Ddegrees frame-1, respectively]. Angle α for each frame was calculated using the arctangent function:
-αt = Arctan ((|Y_(b;t)-Y_(a;t) |)/(|X_(b;t)-X_(a;t) |))*180/π
+	Prefix-angles.csv: Angles and changes in angle (bending rate) of line connecting two user-defined points along the root midline. Angle α for each frame was calculated using the arctangent function.
+	
 	 Prefix-angle.png and -dAngle-dt.png: Graphs of root angles and bending rates (i.e. change in angle over time; Figure 4d). 
 
-Root velocity profile: The velocity value for any point Pi along the root midline reports how quickly the reference point P0 at the root tip ‘moves’ away from point Pi and thus reflects the total growth of all cells along the midline between points P0 and Pi. Raw velocity for each point along the midline is calculated as (Li; t+1- Li; t))*frame-1 (Figures 3b, 4b). 
+Root velocity profile: The velocity value for any point Pi along the root midline reports how quickly the reference point P0 at the root tip ‘moves’ away from point Pi and thus reflects the total growth of all cells along the midline between points P0 and Pi (Figures 3b, 4b). 
+	
 	Prefix-velocity-raw.csv: Velocity data for each tracked point Pi (rows) in each frame (time; columns). 
+	
 	Prefix-velocity-raw-unadjusted.png: 3D heatmap of velocity profiles for each frame and each point along the root length. X-axis represents time (in frames), Y-axis represents the position Pi along the root axis, and autoscaled color represents velocity (pixels frame-1).
+	
 	Prefix-2D-velocity-smoothing.png: Graph of raw velocity profile and regression curve along entire root at user-defined frame (time point) t (specified in ‘user-defined-parameters.csv’).
+	
 	Prefix-velocity-smoothed-and-midlineshiftcorrected.csv: Smoothed velocity data; local regression was performed using user-defined Locally-Weighted Scatterplot Smoothing (LOWESS) (specified in ‘user-defined-parameters.csv’). The position of each point along the root axis was corrected by accounting for root growth over time (see Note 8). 
+	
 	Prefix-velocity-auto-scale.png: 3D heatmap of smoothed velocity profiles for each frame and each (corrected) position Pi along the root length. Autoscaled color represents velocity (pixels frame-1).
+	
 	Prefix-velocity-manual-scale.png: 3D heatmap of smoothed velocity profiles for each frame and each (corrected) position Pi along the root length. Color represents velocity (pixels frame-1) per user-defined scale (minimum, maximum values in LUT; specified in ‘user-defined-parameters.csv’).
 
-Root REGR (=strain) profile: REGR values along the root are calculated as the derivatives of the smoothed velocity curve. Values reflect local relative expansion as fraction * frame-1; to convert into units of [% h-1], multiply values by 100 [%] * (60/frame interval) * 60 [h]. 
+Root REGR (=strain) profile: REGR values along the root are calculated as the derivatives of the smoothed velocity curve. Values reflect local relative expansion as fraction. 
+	
 	Prefix-REGR-raw.csv: Relative elemental growth rate for each position Pi (rows) at each frame (time; columns). 
+	
 	Prefix-REGR-raw.png: 3D heatmap of raw (unsmoothed) REGR profiles for each frame and each position along the root length. Auto-scaled color represents REGR (fractions frame-1).
+	
 	Prefix-REGR-smoothed.csv: Smoothed REGR data; local regression was performed using user-defined Locally-Weighted Scatterplot Smoothing (LOWESS) (specified in ‘user-defined-parameters.csv’).
-	Prefix-REGR-auto-scale.png: 3D heatmap of smoothed REGR profiles for each frame and each position along the root length. Auto-scaled color represents REGR (fractions frame-1).
-	Prefix-REGR-manual-scale.png: 3D heatmap of smoothed REGR profiles for each frame and each position along the root length. Color represents REGR (fractions frame-1) per user-defined scale (minimum, maximum values for LUT; (specified in ‘user-defined-parameters.csv’).
+	
+	Prefix-REGR-auto-scale.png: 3D heatmap of smoothed REGR profiles for each frame and each position along the root length. Auto-scaled color represents REGR.
+	
+	Prefix-REGR-manual-scale.png: 3D heatmap of smoothed REGR profiles for each frame and each position along the root length. Color represents REGR per user-defined scale (minimum, maximum values for LUT; (specified in ‘user-defined-parameters.csv’).
