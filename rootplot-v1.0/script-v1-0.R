@@ -1,6 +1,6 @@
-# Rootplot ver 1.0
-# Coded by: Cody DePew - depewcod@gmail.com
-# Summer 2019
+# RootPlot ver 1.0
+# By: Cody DePew - depewcod@gmail.com
+# Summer 2020
 
 # LOAD PARAMETERS AND DATA ------------------------------------------------
 
@@ -20,14 +20,17 @@ angle_2 <- as.numeric(as.character(params[10,1]))
 twoD_velo_plot_frame <- as.numeric(as.character(params[11,1]))
 f_smooth <- as.numeric(as.character(params[12,1]))
 f_smooth_horiz <- as.numeric(as.character(params[13,1]))
-velo_min_color <- as.numeric(as.character(params[14,1]))
-velo_max_color <- as.numeric(as.character(params[15,1]))
-velo_x_tick <- as.numeric(as.character(params[16,1]))
-velo_y_tick <- as.numeric(as.character(params[17,1]))
-REGR_min_color <- as.numeric(as.character(params[18,1]))
-REGR_max_color <- as.numeric(as.character(params[19,1]))
-REGR_x_tick <- as.numeric(as.character(params[20,1]))
-REGR_y_tick <- as.numeric(as.character(params[21,1]))
+f_smooth_space_REGR <- as.numeric(as.character(params[14,1]))
+f_smooth_time_REGR <- as.numeric(as.character(params[15,1]))
+
+velo_min_color <- as.numeric(as.character(params[16,1]))
+velo_max_color <- as.numeric(as.character(params[17,1]))
+velo_x_tick <- as.numeric(as.character(params[18,1]))
+velo_y_tick <- as.numeric(as.character(params[19,1]))
+REGR_min_color <- as.numeric(as.character(params[20,1]))
+REGR_max_color <- as.numeric(as.character(params[21,1]))
+REGR_x_tick <- as.numeric(as.character(params[22,1]))
+REGR_y_tick <- as.numeric(as.character(params[23,1]))
 # finish
 rm(params)
 # leave these set to 1
@@ -135,9 +138,14 @@ for (mid in midline_map){
 df_midline_interval <- data.frame(midline_interval)
 #midline_interval transposition
 midline_interval_trans <- t(df_midline_interval)
+
+#export
+#name
+dfmint_name <- "growth_rate"
+colnames(df_midline_interval) <- dfmint_name
 #export
 write.table(
-  midline_interval_trans,
+  df_midline_interval,
   paste0("./output/", out_prefix, "-midline-growth-rate.csv"),
   sep=",",
   row.names=FALSE
@@ -357,7 +365,7 @@ plot.single.time <- function(df, single = 65) {
   ggplot() +
     #label
     ggtitle(paste0("raw velocity data at frame ", as.character(twoD_velo_plot_frame), " (original tracked points)")) +
-    labs(x = "distance from QC (original tracked points)", y = "velocity (pixels/frame)") +
+    labs(x = "distance from P0 (# tracked midline points)", y = "velocity (pixels/frame)") +
     #lines
     geom_line(
       aes(
@@ -452,7 +460,7 @@ preview.smooth <- function(df, which.line = 65, f = 0.1) {
         f
       )
     ) +
-    labs(x = "distance from QC (midline points)", y = "velocity (pixels/frame)") +
+    labs(x = "distance from P0 (# tracked midline points)", y = "velocity (pixels/frame)") +
     #unsmoothed
     geom_line(
       aes(
@@ -578,7 +586,7 @@ heatplot.autoscale.velo.smooth <- function(df) {
   ggplot(data.melted, aes(x = Var1, y = Var2, fill = value)) + 
     #label
     ggtitle("Smoothed Velocity Data - Adjusted for midline point shifting") +
-    labs(x = "time (frame)", y = "distance from QC (adjusted midline reference points)") +
+    labs(x = "time (frame)", y = "distance from P0 (# tracked midline points)") +
     #geom
     geom_tile() +
     scale_fill_gradientn(colours = hm.palette(100))
@@ -645,7 +653,7 @@ heatplot.velo.lim <- function(df) {
   ggplot(data.melted, aes(x = Var1, y = Var2, fill = value)) + 
     #label
     ggtitle("Velocity Data - user-defined scale") +
-    labs(x = "time (frame)", y = "distance from QC (adjusted midline reference points)") +
+    labs(x = "time (frame)", y = "distance from P0 (# tracked midline points)") +
     #geom
     geom_tile() +
     scale_fill_gradientn(colours = hm.palette(100),limits=c(velo_min_color,velo_max_color))+
@@ -710,7 +718,7 @@ heatplot.autoscale.regr.raw <- function(df) {
   ggplot(data.melted, aes(x = Var1, y = Var2, fill = value)) + 
     #label
     ggtitle("REGR Raw Data - automatic scale") +
-    labs(x = "time (frame)", y = "distance from QC (adjusted midline reference points)") +
+    labs(x = "time (frame)", y = "distance from P0 (# tracked midline points)") +
     #geom
     geom_tile() +
     scale_fill_gradientn(colours = hm.palette(100))
@@ -781,9 +789,9 @@ dat_adjustminmax_relel <- min.max.adjust(dat_relel_raw_matrix, REGR_min_color, R
 # REGR SMOOTHING ----------------------------------------------------------
 
 #smooth all REGR data
-dat_regr_smooth <- smooth.all(dat_relel_raw_10, f = f_smooth)
+dat_regr_smooth <- smooth.all(dat_relel_raw_10, f = f_smooth_space_REGR)
 dat_regr_smooth_trans <- t(dat_regr_smooth)
-dat_regr_smooth_trans_smooth <- smooth.all(dat_regr_smooth_trans, f = f_smooth_horiz)
+dat_regr_smooth_trans_smooth <- smooth.all(dat_regr_smooth_trans, f = f_smooth_time_REGR)
 dat_regr_smooth_final <- t(dat_regr_smooth_trans_smooth)
 
 #plot smoothed regr
@@ -800,7 +808,7 @@ heatplot.autoscale.regr.smooth <- function(df) {
   ggplot(data.melted, aes(x = Var1, y = Var2, fill = value)) + 
     #label
     ggtitle("Smoothed REGR Data - autoscale") +
-    labs(x = "time (frame)", y = "distance from QC (adjusted midline reference points)") +
+    labs(x = "time (frame)", y = "distance from P0 (# tracked midline points)") +
     #geom
     geom_tile() +
     scale_fill_gradientn(colours = hm.palette(100))
@@ -840,7 +848,7 @@ heatplot.regr.smooth.lim <- function(df) {
   ggplot(data.melted, aes(x = Var1, y = Var2, fill = value)) + 
     #label
     ggtitle("Smoothed REGR Data - user-defined scale") +
-    labs(x = "time (frames)", y = "distance from QC (adjusted midline reference points)") +
+    labs(x = "time (frames)", y = "distance from P0 (# tracked midline points)") +
     #geom
     geom_tile() +
     scale_fill_gradientn(colours = hm.palette(100),limits=c(REGR_min_color,REGR_max_color)) +
