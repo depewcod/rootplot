@@ -1,4 +1,4 @@
-# RootPlot ver 1.0
+# Rootplot ver 1.0
 # By: Cody DePew - depewcod@gmail.com
 # Summer 2020
 
@@ -491,7 +491,7 @@ png(
   width=i_width,
   height=i_height
 ) 
-preview.smooth(dat_velo_raw_rev, which.line = twoD_velo_plot_frame, f = f_smooth)
+preview.smooth(dat_velo_raw, which.line = twoD_velo_plot_frame, f = f_smooth)
 dev.off()
 
 #smooth all velocity data
