@@ -50,7 +50,7 @@ To run an R script in R studio:
 
 1.) RAW DATA - X-Y COORDINATES
 
-XY coord. obtained from phytomorph according to Shih et al., 2014 and Bhat et al, 
+XY coord. obtained from phytomorph according to Shih et al., 2014 and Bhat et al.
 
 RootPlot utilizes XY data from any source in the following format:
 
@@ -99,29 +99,29 @@ REGR_y_tick: Tick mark interval, REGR heatplot, y axis
 
 3.) ROOTPLOT OUTPUTS (See further information in the main text of paper.)
 
-Root growth rate: Root growth rates are calculated as changes in root ‘mid’line (or ‘edgeline’ for analysis of differential growth on opposite root flanks) length per frame. For midline-based root growth rates to correctly reflect total growth rate, tracked points must encompass the entire root elongation zone (Figure 3a,b).
+Root growth rate: Root growth rates are calculated as changes in root ‘mid’line (or ‘edgeline’ for analysis of differential growth on opposite root flanks) length per frame. For midline-based root growth rates to correctly reflect total growth rate, tracked points must encompass the entire root elongation zone.
 	
-	Prefix-midlines.csv: Length of root midline in successive frames (Figure 4b). Each column corresponds to the midline in a particular frame (time point); each row lists the cumulative length of the root midline (in pixels of the original image) with increasing distance from the reference point P0; the midline length is calculated as the sum of distances between neighboring tracked points Pi by applying the Pythagorean equation to their XY coordinates (Figure 4a). The last cell in each column thus reflects the entire length Ln of the measured midline in a frame.
+	Prefix-midlines.csv: Length of root midline in successive frames. Each column corresponds to the midline in a particular frame (time point); each row lists the cumulative length of the root midline (in pixels of the original image) with increasing distance from the reference point P0; the midline length is calculated as the sum of distances between neighboring tracked points Pi by applying the Pythagorean equation to their XY coordinates. The last cell in each column thus reflects the entire length Ln of the measured midline in a frame.
 
-	Prefix-midline growth rate.csv: Root growth rates (Figure 4c) calculated as differences in total midline length between frames.
+	Prefix-midline growth rate.csv: Root growth rates calculated as differences in total midline length between frames.
 	
 	Prefix-midline growth rate.png: Graphs of root growth rates.
 
-Root angle: Root angles are calculated as angles of a straight line connecting two user-defined points P1 and P2 (specified in ‘user-defined-parameters.csv’). These points are selected from the list of tracked points making up the root midline (Fig. 3c). 
+Root angle: Root angles are calculated as angles of a straight line connecting two user-defined points P1 and P2 (specified in ‘user-defined-parameters.csv’). These points are selected from the list of tracked points making up the root midline. 
 
 	Prefix-angles.csv: Angles and changes in angle (bending rate) of line connecting two user-defined points along the root midline. Angle α for each frame was calculated using the arctangent function.
 	
-	 Prefix-angle.png and -dAngle-dt.png: Graphs of root angles and bending rates (i.e. change in angle over time; Figure 4d). 
+	 Prefix-angle.png and -dAngle-dt.png: Graphs of root angles and bending rates (i.e. change in angle over time). 
 
-Root velocity profile: The velocity value for any point Pi along the root midline reports how quickly the reference point P0 at the root tip ‘moves’ away from point Pi and thus reflects the total growth of all cells along the midline between points P0 and Pi (Figures 3b, 4b). 
+Root velocity profile: The velocity value for any point Pi along the root midline reports how quickly the reference point P0 at the root tip ‘moves’ away from point Pi and thus reflects the total growth of all cells along the midline between points P0 and Pi. 
 	
 	Prefix-velocity-raw.csv: Velocity data for each tracked point Pi (rows) in each frame (time; columns). 
 	
-	Prefix-velocity-raw-unadjusted.png: 3D heatmap of velocity profiles for each frame and each point along the root length. X-axis represents time (in frames), Y-axis represents the position Pi along the root axis, and autoscaled color represents velocity (pixels frame-1).
+	Prefix-velocity-raw-unadjusted.png: 3D heatmap of velocity profiles for each frame and each point along the root length. X-axis represents time (in frames), Y-axis represents the position Pi along the root axis, and autoscaled color represents velocity (pixels*frame-1).
 	
 	Prefix-2D-velocity-smoothing.png: Graph of raw velocity profile and regression curve along entire root at user-defined frame (time point) t (specified in ‘user-defined-parameters.csv’).
 	
-	Prefix-velocity-smoothed-and-midlineshiftcorrected.csv: Smoothed velocity data; local regression was performed using user-defined Locally-Weighted Scatterplot Smoothing (LOWESS) (specified in ‘user-defined-parameters.csv’). The position of each point along the root axis was corrected by accounting for root growth over time (see Note 8). 
+	Prefix-velocity-smoothed-and-midlineshiftcorrected.csv: Smoothed velocity data; local regression was performed using user-defined Locally-Weighted Scatterplot Smoothing (LOWESS) (specified in ‘user-defined-parameters.csv’). The position of each point along the root axis was corrected by accounting for root growth over time. 
 	
 	Prefix-velocity-auto-scale.png: 3D heatmap of smoothed velocity profiles for each frame and each (corrected) position Pi along the root length. Autoscaled color represents velocity (pixels frame-1).
 	
