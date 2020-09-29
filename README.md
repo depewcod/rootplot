@@ -50,52 +50,76 @@ To run an R script in R studio:
 
 1.) RAW DATA - X-Y COORDINATES
 
-XY coord. obtained from phytomorph according to Shih et al., 2014 and Bhat et al.
+XY coord. obtained via Image Processing Toolkit v10 according to Shih et al., 2014 and Bhat et al, 2020.
 
 RootPlot utilizes XY data from any source in the following format:
 
-      | Ref Point | Ref point |   P2    |   P2    | ... |   Pn    |   Pn    |
+      |    P0     |    P0     |   P1    |   P1    | ... |   Pn    |   Pn    |
       |  X coord  |  Y coord  | X coord | Y coord | ... | X coord | Y coord |
 -----------------------------------------------------------------------------
-  t1  |   Xr,1    |    Yr,1   |   X2,1  |   Y2,1  | ... |   Xn,1  |   Yn,1  |
-  t2  |   Xr,2    |    Yr,2   |   X2,2  |   Y2,2  | ... |   Xn,2  |   Yn,2  |
-  t3  |   Xr,3    |    Yr,3   |   X2,3  |   Y2,3  | ... |   Xn,3  |   Yn,3  |
-  t4  |   Xr,4    |    Yr,4   |   X2,4  |   Y2,4  | ... |   Xn,4  |   Yn,4  |
+  t1  |   X0,1    |    Y0,1   |   X1,1  |   Y1,1  | ... |   Xn,1  |   Yn,1  |
+  t2  |   X0,2    |    Y0,2   |   X1,2  |   Y1,2  | ... |   Xn,2  |   Yn,2  |
+  t3  |   X0,3    |    Y0,3   |   X1,3  |   Y1,3  | ... |   Xn,3  |   Yn,3  |
+  t4  |   X0,4    |    Y0,4   |   X1,4  |   Y1,4  | ... |   Xn,4  |   Yn,4  |
   ... |   ...     |    ...    |   ...   |   ...   | ... |   ...   |   ...   |
-  tn  |   Xr,n    |    Yr,n   |   X2,n  |   Y2,n  | ... |   Xn,n  |   Yn,n  |
+  tn  |   X0,n    |    Y0,n   |   X1,n  |   Y1,n  | ... |   Xn,n  |   Yn,n  |
 -----------------------------------------------------------------------------
 
-Note: Table should include X-Y coordinates only. Labels (e.g. t1, Ref. point X coord, etc...) are included here for demonstration only.
+Note: Table should include numerical X-Y coordinates only. Labels are included here for demonstration only.
 
-For  each timepoint t, Xr and Yr are coordinates of the first (or reference) point along the midline (e.g. the quiescent center/root tip) and each additional P (X-Y) pair represents the coordinates of points along the mid/edgeline progressively more distant from the reference point/
+For  each timepoint t, X0 and Y0 are coordinates of the first (or reference) point P0 along the midline (e.g. the quiescent center/root tip) and each additional P (X-Y) pair represents the coordinates of points along the mid/edgeline progressively more distant from the reference point/
 
 2) USER-DEFINED PARAMETERS
 
-Access plotting parameters by opening the file "user-defined-parameters.csv" located in the RootPlot home folder. After making any necessary changes to the parameters (described in the user-defined-parameters.csv file itself), ensure that the file is saved before running RootPlot. RootPlot accesses the parameters directly from this file. NOTE: ENSURE THAT YOU ARE SAVING THE FILE AS ".CSV" MICROSOFT EXCEL MAY PROMPT YOU TO SAVE WITH ANOTHER FILE EXTENSION.
+RootPlot_v1 obtains settings for data analysis from the file “user-defined-parameters.csv” in the RootPlot home folder. For ease of use, this file can be opened and edited in spreadsheet software such as Microsoft Excel, but must retain the “.csv” file extension. These parameters are: 
 
-data_in: Name of file containing raw data (must be in "input" folder. Must be .csv file but do not include ".csv" extension in parameters)
-out_prefix: Prefix for output files (no spaces)
-ref_midline_interval: Distance (in pixels) between original (reference) tracked midline points
-i_width: Width (pixels) of PNG output files
-i_height: Height (pixels) of PNG output files
-twoD_x_tick_int: Interval of x-axis (time/frame) tick marks for growth rate, root angle, and bending rate 2D plots.
-growth_y_tick_int: Interval of y-axis tick marks for growth rate 2D plot.
-angle_y_tick_int: Interval of y-axis tick marks for root angle 2D plot.
-angle_1: First midline point for angle calculation (the QC/tip is point #1)
-angle_2: Second midline point for angle calculation (for example, a value of three will calculate the angle of a line between the root tip (#1) and the third reference point)
-twoD_velo_plot_frame: Frame number of single velocity profile to display as an example while performing LOWESS smoothing
-f_smooth_space: For velocity: F value/smoother span, determines amount of smoothing in LOWESS function. Represents the fraction of total points that will be considered during regression.
-f_smooth_time: For velocity: F value/smoother span (as above) but for horizontal (time) smoothing
-f_smooth_space_REGR: For REGR: same as above
-f_smooth_time_REGR: For REGR: same as above
-velo_min_color: Minimum value of color scale for velocity heatplot
-velo_max_color: Maximum value of color scale for velocity heatplot
-velo_x_tick: Tick mark interval, velocity heatplot, x axis
-velo_y_tick: Tick mark interval, velocity heatplot, y axis
-REGR_min_color: Minimum value of color scale for REGR heatplot (units: percent per frame)
-REGR_max_color: Maximum value of color scale for REGR heatplot
-REGR_x_tick: Tick mark interval, REGR heatplot, x axis
-REGR_y_tick: Tick mark interval, REGR heatplot, y axis
+(i) data_in (X-Y coordinate input): Name of file containing raw X-Y coordinate data obtained using Image Processing Toolkit v10 (or other software). This file must be in the RootPlot “input” folder and must be a “.csv” file. However, do not include the “.csv” extension in this field. This file name should not include spaces. 
+
+(ii) out_prefix (Output prefix): User-defined prefix for all RootPlot output files, which are located in the “output” folder after running the RootPlot script. Prefix should not include spaces. 
+
+(iii) ref_midline_interval (Interval between tracked points): Distance (in pixels) between tracked midline points at t=1. This distance corresponds to the distance between tracked points along the root length used to generate X-Y coordinates with Image Processing Toolkit v10 and is necessary to correctly calculate REGR values. 
+
+(iv) i_width (Output image width): Width (in pixels) of all “.png” output files. 
+
+(v) i_height (Output image height): Height (in pixels) of all “.png” output files.  
+
+(vi) twoD_x_tick_int (X-axis tick mark interval): Interval of X-axis (time, as frames) tick marks for midline-growth-rate.png, angle.png and dAngle-dt.png 2D plots. 
+
+(vii) growth_y_tick_int (Growth rate tick mark interval): Interval of Y-axis tick marks in midline-growth-rate.png 2D plot. 
+
+(viii) angle_y_tick_int (Root angle tick mark interval): Interval of Y-axis tick marks in angle.png 2D plot. 
+
+(ix) angle_1 (First angle point): First midline point used in angle calculation. By default, this point should be set to “1,” representing the root tip/quiescent center coordinate obtained from Image Processing Toolkit v10. 
+
+(x) angle_2 (Second angle point): Second midline point used in angle calculation. For example, a value of “20” will calculate the angle of a line between the root tip (when angle_1 = 1) and the twentieth tracked point along the midline. If ref_midline_interval = 10, i.e. tracking points were positioned every 10 pixels along midline, this line segment will be approx. 190 pixels in length [ref_midline_interval * (angle_2 - angle_1)]. 
+
+(xi) twoD_velo_plot_frame (Timepoint for velocity smoothing example): Frame number of a single velocity profile. RootPlot displays both a 2D raw velocity profile for this frame, and a second identical velocity profile with LOWESS smoothing overlaid in red. This output can be used to preview the effect of different LOWESS smoothing values on spatial smoothing. 
+
+(xii) f_smooth_space (Spatial LOWESS delta value): Delta value (determines the amount of smoothing) for spatial smoothing of velocity profile by the LOWESS function. This value represents the fraction of total points that will be considered during regression, and therefore must be between 0 and 1. Thus, a smaller value will result in less smoothing. LOWESS is an iterative function. RootPlot_v1 performs three iterations of the LOWESS function using this delta value each time data is spatially smoothed. 
+
+(xiii) f_smooth_time (Temporal LOWESS delta value): Delta value for temporal smoothing of the velocity profile by the LOWESS function. 
+
+(xiv) f_smooth_space_REGR: Delta value for spatial smoothing of REGR profile by the LOWESS function. 
+
+(xv) f_smooth_time_REGR: Delta value for temporal smoothing of the REGR profile by the LOWESS function. 
+
+(xvi) velo_min_color (Velocity heatmap minimum color scale): Minimum velocity value represented as the color blue in velocity heatmap spectrum. Any velocity below this value will also be reported as blue in velocity-manual-scale.png heatmap. Manual scaling ensures that results from different experiments can be presented in standardized heatmaps. 
+
+(xvii) velo_max_color (Velocity heatmap maximum color scale): Maximum velocity value represented as the color red in velocity heatmap spectrum. Any velocity above this value will also be reported as red in velocity-manual-scale.png heatmap. 
+
+(xviii) velo_x_tick (Velocity heatmap time tick marks): Interval of X-axis (time, as frames) tick marks in velocity-manual-scale.png heatmap. 
+
+(xix) velo_y_tick (Velocity heatmap spatial tick marks): Interval of Y-axis tick marks (distance from root tip, as number of tracked points) in velocity-manual-scale.png heatmap. 
+
+(xx) REGR_min_color (REGR heatmap minimum color scale): Minimum REGR (blue) for REGR heatmap spectrum. Any REGR below this value will also be reported as blue in REGR-manual-scale.png heatmap. 
+
+(xxi) REGR_max_color (REGR maximum color scale): Maximum REGR (red) for REGR heatmap spectrum. Any REGR above this value will also be reported as red in REGR-manual-scale.png heatmap. 
+
+(xxii) REGR_x_tick (REGR heatmap time tick marks): Interval of X-axis (time, as frames) tick marks in REGR-manual-scale.png heatmap. 
+
+(xxiii) REGR_y_tick (REGR heatmap spatial tick marks): Interval of Y-axis tick marks (distance from root tip, as number of tracked points) in REGR-manual-scale.png heatmap. 
+
+
 
 3.) ROOTPLOT OUTPUTS (See further information in the main text of paper.)
 
